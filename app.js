@@ -1,5 +1,6 @@
 const canvas = document.getElementById('jsCanvas');
 const ctx = canvas.getContext('2d'); // 캔버스에 그림그리는 도구를 얻어내기
+const colors = document.getElementsByClassName('jsColor');
 
 // canvas size
 canvas.width = 700;
@@ -24,21 +25,19 @@ function onMouseMove(evnet) {
 
   if (!painting) {
     // painting === false; 클릭하지 않고 마우스를 움직이기만 했을 때
-    console.log('createing path in', x, y);
-
     ctx.beginPath(); // 1) 새로운 빈 경로 생성
     ctx.moveTo(x, y); // 2) 시작점 설정
   } else {
     // mousedown 이벤트 발생 (startPainting) > painting === true > else문 실행
-    console.log('createing line in', x, y);
-
     ctx.lineTo(x, y); // 3) 끝점 설정
     ctx.stroke(); // 4) 경로를 그리기 (외곽선)
   }
 }
 
-function onMouseDown(event) {
-  painting = true;
+function handleColorClick(event) {
+  const color = event.target.style.backgroundColor;
+  // console.log(color);
+  ctx.strokeStyle = color; // 색 변경
 }
 
 if (canvas) {
@@ -55,3 +54,9 @@ if (canvas) {
   // mouseleave: 마우스가 벗어남
   canvas.addEventListener('mouseleave', stopPainting);
 }
+
+// Array.from: object로 부터 array를 만듦
+console.log(Array.from(colors));
+Array.from(colors).forEach((color) =>
+  color.addEventListener('click', handleColorClick)
+);
