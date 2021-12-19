@@ -3,6 +3,7 @@ const ctx = canvas.getContext('2d'); // 캔버스에 그림그리는 도구를 �
 const colors = document.getElementsByClassName('jsColor');
 const range = document.getElementById('jsRange');
 const mode = document.getElementById('jsMode');
+const saveBtn = document.getElementById('jsSave');
 
 const INITAL_COLOR = '#2c2c2c';
 const CANVAS_SIZE = 700;
@@ -10,6 +11,10 @@ const CANVAS_SIZE = 700;
 // canvas size
 canvas.width = CANVAS_SIZE;
 canvas.height = CANVAS_SIZE;
+
+// set default background-color
+ctx.fillStyle = 'white';
+ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
 ctx.strokeStyle = INITAL_COLOR;
 ctx.fillStyle = INITAL_COLOR;
@@ -70,6 +75,20 @@ function handleCanvasClick() {
   }
 }
 
+function handleCM(event) {
+  event.preventDefault(); // 우클릭 막음
+}
+
+function handleSaveClick(event) {
+  const image = canvas.toDataURL('image/png');
+  // console.log(image);
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL();
+  link.download = 'PaintJS[🎨]'; // 저장시 파일명
+  // console.log(link);
+  link.click();
+}
+
 if (canvas) {
   // mousemove: 마우스 움직였을 때
   canvas.addEventListener('mousemove', onMouseMove);
@@ -85,6 +104,8 @@ if (canvas) {
   canvas.addEventListener('mouseleave', stopPainting);
 
   canvas.addEventListener('click', handleCanvasClick);
+
+  canvas.addEventListener('contextmenu', handleCM);
 }
 
 // Array.from: object로 부터 array를 만듦
@@ -98,4 +119,8 @@ if (range) {
 
 if (mode) {
   mode.addEventListener('click', handleModeClick);
+}
+
+if (saveBtn) {
+  saveBtn.addEventListener('click', handleSaveClick);
 }
