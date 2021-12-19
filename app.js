@@ -4,11 +4,15 @@ const colors = document.getElementsByClassName('jsColor');
 const range = document.getElementById('jsRange');
 const mode = document.getElementById('jsMode');
 
-// canvas size
-canvas.width = 700;
-canvas.height = 700;
+const INITAL_COLOR = '#2c2c2c';
+const CANVAS_SIZE = 700;
 
-ctx.strokeStyle = '#2c2c2c';
+// canvas size
+canvas.width = CANVAS_SIZE;
+canvas.height = CANVAS_SIZE;
+
+ctx.strokeStyle = INITAL_COLOR;
+ctx.fillStyle = INITAL_COLOR;
 ctx.lineWidth = 2.5;
 
 let painting = false;
@@ -41,6 +45,7 @@ function handleColorClick(event) {
   const color = event.target.style.backgroundColor;
   // console.log(color);
   ctx.strokeStyle = color; // 색 변경
+  ctx.fillStyle = color; // 색 채우기 색 변경
 }
 
 function handleRangeChange(event) {
@@ -59,6 +64,12 @@ function handleModeClick() {
   }
 }
 
+function handleCanvasClick() {
+  if (filling) {
+    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+  }
+}
+
 if (canvas) {
   // mousemove: 마우스 움직였을 때
   canvas.addEventListener('mousemove', onMouseMove);
@@ -72,6 +83,8 @@ if (canvas) {
 
   // mouseleave: 마우스가 벗어남
   canvas.addEventListener('mouseleave', stopPainting);
+
+  canvas.addEventListener('click', handleCanvasClick);
 }
 
 // Array.from: object로 부터 array를 만듦
